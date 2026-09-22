@@ -1,16 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 
-const port = 4555;
+const port = process.env.PORT || 4555;
 
 
 app.use(express.json());
+app.use(morgan('dev'));
 
+
+
+const dbUrl = process.env.DB_URL;
 
 const databaseConnection = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/techSchoolApp");
+    await mongoose.connect(dbUrl);
     console.log("Database connected successfully");
   } catch (error) {
     console.log("Database connection failed", error);
